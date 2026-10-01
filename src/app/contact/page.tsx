@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Breadcrumbs, Button } from "@/components/ui";
 import { ContactForm } from "@/components/contact-form";
 import { deliveryAdapter } from "@/lib/enquiry-delivery";
+import { enquiryStorageReady } from "@/lib/enquiry-repository";
 import { pageMetadata } from "@/lib/metadata";
 export const metadata = pageMetadata(
   "Get Support",
@@ -23,6 +24,7 @@ export default async function Page({
   }>;
 }) {
   const params = await searchParams;
+  const storageReady = await enquiryStorageReady();
   return (
     <section className="contact-page container">
       <Breadcrumbs current="Get Support" />
@@ -96,7 +98,7 @@ export default async function Page({
               ? params.message.slice(0, 5000)
               : undefined
           }
-          available={deliveryAdapter !== null}
+          available={deliveryAdapter !== null && storageReady}
         />
       </div>
     </section>

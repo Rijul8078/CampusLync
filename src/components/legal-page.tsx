@@ -1,5 +1,7 @@
 import { Hero } from "./ui";
 import { site } from "@/lib/config";
+import { databaseConfigured } from "@/lib/database";
+import { emailNotificationConfigured } from "@/lib/enquiry-repository";
 export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
   return (
     <>
@@ -44,10 +46,14 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
             <p>
               Typing into the form does not transmit its contents. If you submit
               a valid form, the details are sent to this website’s server for
-              validation. Delivery is currently disabled: the application does
-              not save the enquiry, send it to a recipient or log its contents.
-              Your form entries remain in your current browser page so you can
-              review them; the site does not intentionally store them in browser
+              validation.{" "}
+              {databaseConfigured
+                ? "Accepted enquiries are stored in the configured PostgreSQL database so CampusLync can respond and manage the request."
+                : "Enquiry storage is currently disabled, so the application does not accept or save the request."}{" "}
+              {emailNotificationConfigured()
+                ? "The configured email provider also sends an internal notification to the CampusLync recipient."
+                : "No email notification provider is currently configured."}{" "}
+              The site does not intentionally store form drafts in browser
               storage.
             </p>
             <h2>Website operation</h2>
@@ -66,6 +72,15 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
               applicable rights and how to exercise them. Consent wording must
               be reviewed against the actual processing arrangements.
             </p>
+            <h2>Retention and security</h2>
+            <p>
+              The planned retention period is{" "}
+              {process.env.DATA_RETENTION_DAYS || "not yet configured"} days and
+              must be confirmed in the final policy. Rate limiting uses a
+              one-way hash rather than storing raw IP addresses in the
+              application database. Access to enquiry records is restricted to
+              the authenticated administration area.
+            </p>
             <h2>External websites</h2>
             <p>
               Links to other websites are provided for context. Their own
@@ -79,8 +94,10 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
               CampusLync describes academic, career and practical student living
               support. Business legal identity:{" "}
               {site.legalName || "not yet configured"}. This website currently
-              provides service information and an enquiry form with delivery
-              disabled.
+              provides service information and an enquiry form{" "}
+              {databaseConfigured
+                ? "connected to persistent storage."
+                : "with delivery disabled."}
             </p>
             <h2>Information and service agreements</h2>
             <p>

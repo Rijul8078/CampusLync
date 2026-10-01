@@ -29,7 +29,7 @@ Set `NEXT_PUBLIC_BOOKING_URL` to a confirmed HTTPS Calendly, Cal.com or other sc
 
 The protected dashboard is available at `/admin`. It remains disabled until `ADMIN_USERNAME`, `ADMIN_PASSWORD` and a random `ADMIN_SESSION_SECRET` of at least 32 characters are configured. Authentication uses an eight-hour, HTTP-only, same-site signed session cookie. Use platform-level rate limiting and secret management in production.
 
-The dashboard reports the website's actual configuration, resource inventory and integration readiness. It intentionally does not display invented enquiry records. A persistent inbox requires an approved CRM or database, an enquiry delivery adapter and confirmed data-retention rules.
+The dashboard reports the website's actual configuration, resource inventory and integration readiness. When PostgreSQL is connected and migrated it provides a real enquiry inbox, contact details, notification status and workflow states. No sample or invented enquiry records are displayed.
 
 Inner-page photography is downloaded and served locally from `public/images`. Photos are sourced from Pexels under its free-use license: Yan Krukau (Study), Oluwapamilerinayo Ajala (Career), Mikhail Nilov and Ludovic Delot (student life), Kübra Arslaner (Resources), and Pexels contributors for the accommodation and London images. The files are resized WebP assets; source-page records should be retained if images are replaced or redistributed outside this project.
 
@@ -37,13 +37,15 @@ Branded supporting artwork is stored in `public/artwork`. The four transparent W
 
 Resources are honest coming-soon previews. To publish a resource, add its article route and reviewed content, then change its status to `published`; the ResourceCard already supports published article links. Add new article URLs to sitemap generation. Do not change status without a working article route.
 
-## Enquiry delivery
+## Database and enquiry delivery
 
-Delivery is intentionally disabled. The form validates on the client and server; valid requests return HTTP 503 with an explicit “Your enquiry has not been sent” message. The app does not persist or log enquiry content. No fake success response is used.
+The site supports PostgreSQL persistence through `DATABASE_URL`. Run `npm run db:migrate` once for each new database before accepting enquiries. With no database configured, valid submissions continue to return HTTP 503 and the UI clearly states that nothing was sent or saved.
 
-Implement a server-only provider adapter through the `DeliveryAdapter` interface in `src/lib/enquiry-delivery.ts`, then replace the null adapter. An accepted provider response is required for success. Keep secrets in server environment variables. Agree on the recipient, sender identity, delivery provider and retention rules; document them in the final privacy policy. Add provider-appropriate timeout/retry handling, idempotency and rate limiting before opening submissions. The endpoint already limits body size and validates same-origin browser requests, but these are not a replacement for launch abuse controls.
+With a migrated database, the server validates and stores the enquiry before showing success. It does not log message content. The endpoint includes a hidden-field bot trap, same-origin checks, a 24 KB body limit and database-backed rate limiting of five attempts per hashed network identifier per 15-minute window. Configure a unique `RATE_LIMIT_SECRET`; raw IP addresses are not stored in the application database.
 
-After enabling delivery, update the FAQ, contact availability text, form footnote, Privacy and Terms to reflect actual operation. Retest success, rejection, timeout, validation and network failures. Never advertise a response time unless the business confirms it.
+Resend email notifications are optional. Configure `RESEND_API_KEY`, `ENQUIRY_NOTIFICATION_TO` and `ENQUIRY_FROM_EMAIL` together. The database remains the source of truth: an email-provider failure is recorded in the admin dashboard without discarding an accepted enquiry. Email requests use an idempotency key and an eight-second timeout.
+
+Set and legally confirm `DATA_RETENTION_DAYS`, then schedule `npm run db:cleanup` with the deployment platform. This removes expired enquiries and old rate-limit rows. `/api/health` returns HTTP 200 only when the configured database is reachable.
 
 ## Business and SEO configuration
 
@@ -51,17 +53,22 @@ Copy `.env.example` to `.env.local` and provide confirmed values:
 
 - `NEXT_PUBLIC_SITE_URL`: the real public origin, e.g. your confirmed HTTPS domain (no domain is assumed).
 - `BUSINESS_LEGAL_NAME`, `BUSINESS_CONTACT_EMAIL`, `BUSINESS_POSTAL_ADDRESS`: reviewed business details.
+- `DATABASE_URL`: a pooled PostgreSQL connection URL suitable for the hosting environment.
+- `RATE_LIMIT_SECRET`: a random value of at least 32 characters.
+- `DATA_RETENTION_DAYS`: the reviewed enquiry-retention period.
+- Resend variables: optional internal email notifications.
 
 Without a site URL, the site deliberately emits no canonical URLs, its sitemap is empty and robots disallows indexing. Next.js may warn that it has no metadata base for the generated social image in local builds; configure the domain before production so Open Graph URLs use the real origin. Configure the public URL before building because static metadata and sitemap depend on it. Legal drafts stay noindex until reviewed and finalised.
 
 ## Launch requirements
 
 1. Confirm domain, hosting, business identity and public contact arrangements.
-2. Implement and test live delivery and abuse protection; configure provider credentials securely.
-3. Have the business review all service wording, scope, fees and availability. Complete legal policies with actual processing, consumer and commercial terms, using appropriate professional review.
-4. Remove draft labels and update legal metadata only after that review. Update `check-launch.mjs` to reflect completed checks rather than bypassing it.
-5. Build and rerun browser checks using production-like configuration. Verify canonical URLs, sitemap, social sharing, HTTPS, request logging and deployed delivery.
+2. Create PostgreSQL, configure its pooled connection URL, and run `npm run db:migrate`.
+3. Configure the rate-limit secret and optionally a verified Resend sender and recipient.
+4. Have the business review all service wording, scope, fees and availability. Complete legal policies with actual processing, consumer and commercial terms, using appropriate professional review.
+5. Schedule retention cleanup, set `LEGAL_REVIEW_COMPLETE=true` only after review, and run `npm run check:launch`.
+6. Build and rerun browser checks using production-like configuration. Verify canonical URLs, sitemap, social sharing, HTTPS, health checks and deployed delivery.
 
-No analytics, advertising, CMS, booking system, payment collection, property inventory or third-party partnerships are configured. The site does not send mail, contact external organisations or deploy automatically.
+No analytics, advertising, CMS, payment collection, property inventory or third-party partnerships are configured. Calendar scheduling and Resend notifications activate only when their complete environment configuration is supplied. The repository does not deploy automatically.
 
 For the privacy review, consult the [ICO’s privacy information checklist](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/the-right-to-be-informed/what-privacy-information-should-we-provide/), including controller identity, purposes, legal basis, retention, recipients and applicable rights/complaint routes. This is a launch reference, not a claim that the current drafts are legally complete.

@@ -283,6 +283,13 @@ test("API rejects bad requests, oversized input and cross-origin requests", asyn
   expect(
     (
       await request.post("/api/enquiries", {
+        data: { companyWebsite: "https://spam.example" },
+      })
+    ).status(),
+  ).toBe(400);
+  expect(
+    (
+      await request.post("/api/enquiries", {
         headers: { "Content-Type": "application/json" },
         data: "{",
       })
@@ -303,6 +310,15 @@ test("API rejects bad requests, oversized input and cross-origin requests", asyn
       })
     ).status(),
   ).toBe(403);
+});
+test("health endpoint reports database readiness without exposing details", async ({
+  request,
+}) => {
+  const response = await request.get("/api/health");
+  expect([200, 503]).toContain(response.status());
+  const body = await response.json();
+  expect(body.status).toMatch(/^(ok|not_ready)$/);
+  expect(JSON.stringify(body)).not.toContain("DATABASE_URL");
 });
 test("404, sitemap, robots and social image are available", async ({
   page,

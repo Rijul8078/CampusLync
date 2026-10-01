@@ -120,6 +120,16 @@ export function ContactForm({
     );
   return (
     <form className="contact-form" onSubmit={submit} noValidate>
+      <div className="form-honeypot" aria-hidden="true">
+        <label htmlFor="companyWebsite">Company website</label>
+        <input
+          id="companyWebsite"
+          name="companyWebsite"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
       <div className="form-heading">
         <h2>Tell us what you need.</h2>
         <p>A little context helps us understand where to start.</p>
@@ -289,8 +299,9 @@ export function ContactForm({
         )}
       </button>
       <p className="form-footnote">
-        Your details stay in this form unless you submit it. Delivery is
-        currently unavailable.
+        {available
+          ? "Your details are securely submitted only when you press Request Support."
+          : "Your details stay in this form unless you submit it. Delivery is currently unavailable."}
       </p>
     </form>
   );

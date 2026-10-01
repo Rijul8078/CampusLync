@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { enquirySchema } from "../src/lib/enquiries";
-import { submitEnquiry } from "../src/lib/enquiry-delivery";
+import { submitEnquiry } from "../src/lib/enquiry-submission";
 const valid = {
   name: "Test Student",
   email: "student@example.com",

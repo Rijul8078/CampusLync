@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/metadata";
 export const metadata = {
   ...pageMetadata(
     "Privacy Policy — Draft",
-    "Draft privacy information for the CampusLync website and its currently unavailable enquiry delivery.",
+    "Draft privacy information for the CampusLync website and enquiry service.",
     "/privacy",
   ),
   robots: { index: false, follow: true },

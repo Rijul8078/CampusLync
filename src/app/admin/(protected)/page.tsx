@@ -14,6 +14,14 @@ import {
 import { deliveryAdapter } from "@/lib/enquiry-delivery";
 import { downloads, resources, serviceFaqs } from "@/lib/content";
 import { site } from "@/lib/config";
+import { databaseConfigured } from "@/lib/database";
+import {
+  emailNotificationConfigured,
+  enquiryStatuses,
+  listEnquiries,
+  type EnquiryStatus,
+} from "@/lib/enquiry-repository";
+import { updateEnquiryStatusAction } from "./actions";
 
 export const metadata = {
   title: "Admin Dashboard | CampusLync",
@@ -22,7 +30,24 @@ export const metadata = {
 
 const configured = (value: unknown) => Boolean(value);
 
-export default function Page() {
+const statusLabel: Record<EnquiryStatus, string> = {
+  new: "New",
+  contacted: "Contacted",
+  in_progress: "In progress",
+  completed: "Completed",
+  closed: "Closed",
+};
+
+export default async function Page() {
+  let enquiries = [] as Awaited<ReturnType<typeof listEnquiries>>;
+  let databaseHealthy = false;
+  if (databaseConfigured)
+    try {
+      enquiries = await listEnquiries();
+      databaseHealthy = true;
+    } catch {
+      databaseHealthy = false;
+    }
   const published = resources.filter(
     (resource) => resource.status === "published",
   ).length;
@@ -36,6 +61,12 @@ export default function Page() {
       "NEXT_PUBLIC_BOOKING_URL",
     ],
     ["Enquiry delivery", configured(deliveryAdapter), "Delivery adapter"],
+    ["PostgreSQL database", databaseHealthy, "DATABASE_URL / migration"],
+    [
+      "Email notifications",
+      emailNotificationConfigured(),
+      "Resend environment variables",
+    ],
   ] as const;
   const ready = checks.filter(([, status]) => status).length;
 
@@ -59,8 +90,14 @@ export default function Page() {
         <article>
           <Inbox size={21} />
           <span>Enquiries</span>
-          <strong>Not connected</strong>
-          <small>No enquiries are stored by this website.</small>
+          <strong>
+            {databaseHealthy ? enquiries.length : "Not connected"}
+          </strong>
+          <small>
+            {databaseHealthy
+              ? `${enquiries.filter((item) => item.status === "new").length} awaiting review.`
+              : "Database connection or migration required."}
+          </small>
         </article>
         <article>
           <CalendarDays size={21} />
@@ -93,29 +130,104 @@ export default function Page() {
               <p className="eyebrow">Support requests</p>
               <h2>Enquiry inbox</h2>
             </div>
-            <span className="admin-status warning">
-              <CircleDashed size={14} /> Integration required
+            <span
+              className={`admin-status ${databaseHealthy ? "ready" : "warning"}`}
+            >
+              {databaseHealthy ? (
+                <CheckCircle2 size={14} />
+              ) : (
+                <CircleDashed size={14} />
+              )}
+              {databaseHealthy ? "Live inbox" : "Integration required"}
             </span>
           </div>
-          <div className="admin-empty">
-            <div className="admin-empty-art">
-              <Image
-                src="/artwork/global-support.webp"
-                alt=""
-                fill
-                sizes="230px"
-              />
+          {!databaseHealthy ? (
+            <div className="admin-empty">
+              <div className="admin-empty-art">
+                <Image
+                  src="/artwork/global-support.webp"
+                  alt=""
+                  fill
+                  sizes="230px"
+                />
+              </div>
+              <h3>Database setup is incomplete</h3>
+              <p>
+                Add a PostgreSQL connection and run the supplied migration
+                before accepting live enquiries.
+              </p>
+              <Link href="/contact" className="text-link">
+                Open public form <ExternalLink size={15} />
+              </Link>
             </div>
-            <h3>No inbox is connected</h3>
-            <p>
-              The public form validates submissions but does not currently
-              deliver or persist personal information. Connect an approved email
-              or CRM adapter before using this area for live enquiries.
-            </p>
-            <Link href="/contact" className="text-link">
-              Open public form <ExternalLink size={15} />
-            </Link>
-          </div>
+          ) : enquiries.length === 0 ? (
+            <div className="admin-empty">
+              <Inbox size={34} />
+              <h3>No enquiries yet</h3>
+              <p>
+                New support requests will appear here after the public form
+                confirms database storage.
+              </p>
+            </div>
+          ) : (
+            <div className="admin-enquiry-list">
+              {enquiries.map((enquiry) => (
+                <article className="admin-enquiry" key={enquiry.id}>
+                  <div className="admin-enquiry-top">
+                    <div>
+                      <span className={`enquiry-status ${enquiry.status}`}>
+                        {statusLabel[enquiry.status]}
+                      </span>
+                      <h3>{enquiry.name}</h3>
+                      <p>
+                        {enquiry.service} · {enquiry.country} →{" "}
+                        {enquiry.studyCountry}
+                      </p>
+                    </div>
+                    <time dateTime={enquiry.createdAt.toISOString()}>
+                      {new Intl.DateTimeFormat("en-GB", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                        timeZone: "Asia/Kolkata",
+                      }).format(enquiry.createdAt)}{" "}
+                      IST
+                    </time>
+                  </div>
+                  <div className="admin-enquiry-details">
+                    <a href={`mailto:${enquiry.email}`}>{enquiry.email}</a>
+                    {enquiry.phone && (
+                      <a href={`tel:${enquiry.phone}`}>{enquiry.phone}</a>
+                    )}
+                    {enquiry.university && <span>{enquiry.university}</span>}
+                    <span>Preferred: {enquiry.contactMethod}</span>
+                  </div>
+                  <p className="admin-enquiry-message">{enquiry.message}</p>
+                  <div className="admin-enquiry-actions">
+                    <small>
+                      Email notification:{" "}
+                      {enquiry.notificationStatus.replaceAll("_", " ")}
+                    </small>
+                    <form action={updateEnquiryStatusAction}>
+                      <input type="hidden" name="id" value={enquiry.id} />
+                      <label htmlFor={`status-${enquiry.id}`}>Status</label>
+                      <select
+                        id={`status-${enquiry.id}`}
+                        name="status"
+                        defaultValue={enquiry.status}
+                      >
+                        {enquiryStatuses.map((status) => (
+                          <option value={status} key={status}>
+                            {statusLabel[status]}
+                          </option>
+                        ))}
+                      </select>
+                      <button type="submit">Update</button>
+                    </form>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
 
         <aside className="admin-panel admin-readiness" id="configuration">

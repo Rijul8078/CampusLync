@@ -261,7 +261,7 @@ export const faqs = [
   {
     question: "How do I get started?",
     answer:
-      "Visit Get Support and tell us which area you need help with. Online enquiry delivery is not yet enabled; the form clearly shows its availability and will not claim to send an enquiry while delivery is unavailable.",
+      "Visit Get Support and tell us which area you need help with. The form shows whether online enquiry delivery is currently available and confirms a request only after it has been accepted.",
   },
 ];
 export const serviceFaqs = {
