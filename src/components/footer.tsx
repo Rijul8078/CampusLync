@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { site } from "@/lib/config";
 export function Footer() {
   return (
     <footer className="site-footer">
@@ -17,6 +18,10 @@ export function Footer() {
             </Link>
             <p className="footer-tagline">Study. Settle. Succeed.</p>
             <p>Supporting students, wherever they study.</p>
+            <address className="footer-contact">
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <a href={`tel:${site.phone}`}>{site.phone}</a>
+            </address>
           </div>
           {[
             {

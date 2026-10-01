@@ -23,7 +23,7 @@ The site includes Home, Study, Career, Accommodation, Moving to London, Resource
 
 The Resources page includes four downloadable PDF checklists. Regenerate them after changing `scripts/generate-checklists.mjs` with `npm run generate:checklists`.
 
-Set `NEXT_PUBLIC_BOOKING_URL` to a confirmed HTTPS Calendly, Cal.com or other scheduling link to enable calendar booking. Until then, `/book` transparently directs visitors to request a consultation through the support form and does not claim that a time has been reserved.
+The confirmed CampusLync Calendly link is documented in `.env.example`. Set `NEXT_PUBLIC_BOOKING_URL=https://calendly.com/rajeevjh7665/30min` in each deployment environment to enable calendar booking. If it is omitted, `/book` transparently directs visitors to request a consultation through the support form and does not claim that a time has been reserved.
 
 ## Admin dashboard
 
@@ -52,7 +52,7 @@ Set and legally confirm `DATA_RETENTION_DAYS`, then schedule `npm run db:cleanup
 Copy `.env.example` to `.env.local` and provide confirmed values:
 
 - `NEXT_PUBLIC_SITE_URL`: the real public origin, e.g. your confirmed HTTPS domain (no domain is assumed).
-- `BUSINESS_LEGAL_NAME`, `BUSINESS_CONTACT_EMAIL`, `BUSINESS_POSTAL_ADDRESS`: reviewed business details.
+- `BUSINESS_LEGAL_NAME`, `BUSINESS_CONTACT_EMAIL`, `BUSINESS_CONTACT_PHONE`, `BUSINESS_POSTAL_ADDRESS`: reviewed business details.
 - `DATABASE_URL`: a pooled PostgreSQL connection URL suitable for the hosting environment.
 - `RATE_LIMIT_SECRET`: a random value of at least 32 characters.
 - `DATA_RETENTION_DAYS`: the reviewed enquiry-retention period.
@@ -69,6 +69,6 @@ Without a site URL, the site deliberately emits no canonical URLs, its sitemap i
 5. Schedule retention cleanup, set `LEGAL_REVIEW_COMPLETE=true` only after review, and run `npm run check:launch`.
 6. Build and rerun browser checks using production-like configuration. Verify canonical URLs, sitemap, social sharing, HTTPS, health checks and deployed delivery.
 
-No analytics, advertising, CMS, payment collection, property inventory or third-party partnerships are configured. Calendar scheduling and Resend notifications activate only when their complete environment configuration is supplied. The repository does not deploy automatically.
+No analytics, advertising, CMS, payment collection or live property inventory is configured. London accommodation provider relationships are described in the website content, but there is no provider API or property-listing integration. Calendar scheduling and Resend notifications activate only when their complete environment configuration is supplied. The repository does not deploy automatically.
 
 For the privacy review, consult the [ICO’s privacy information checklist](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/the-right-to-be-informed/what-privacy-information-should-we-provide/), including controller identity, purposes, legal basis, retention, recipients and applicable rights/complaint routes. This is a launch reference, not a claim that the current drafts are legally complete.

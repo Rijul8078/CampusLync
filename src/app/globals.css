@@ -521,6 +521,38 @@ svg {
 .contact-booking-link {
   margin: 24px 0;
 }
+.contact-direct {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 32px;
+  font-style: normal;
+}
+.contact-direct a {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: fit-content;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 650;
+}
+.contact-direct svg {
+  color: var(--teal);
+}
+.contact-direct span {
+  display: grid;
+  gap: 2px;
+}
+.contact-direct small {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.contact-direct a:hover {
+  color: var(--teal);
+}
 body:has(.admin-shell) > .site-header,
 body:has(.admin-shell) > .site-footer,
 body:has(.admin-shell) > .whatsapp-button,
@@ -955,8 +987,42 @@ body:has(.admin-login-page) > .quick-enquiry-trigger {
   top: 12px;
 }
 .home-hero {
+  position: relative;
   background: linear-gradient(105deg, #f8fbfc 15%, #f0f7f8 100%);
   overflow: hidden;
+}
+.sketch-motif {
+  position: absolute;
+  z-index: 0;
+  width: 300px;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #187f8c;
+  opacity: 0.105;
+  pointer-events: none;
+}
+.sketch-motif path,
+.sketch-motif circle {
+  vector-effect: non-scaling-stroke;
+}
+.sketch-motif .sketch-dash {
+  stroke-dasharray: 5 8;
+}
+.sketch-motif-hero {
+  top: 54px;
+  left: max(18px, calc((100vw - 1240px) / 2 - 65px));
+  width: 330px;
+  transform: rotate(-5deg);
+}
+.home-hero-grid,
+.home-hero .hero-bottom {
+  position: relative;
+  z-index: 1;
 }
 .home-hero-grid {
   display: grid;
@@ -1642,6 +1708,14 @@ body:has(.admin-login-page) > .quick-enquiry-trigger {
 .artwork-image img {
   object-fit: contain;
 }
+.artwork-image-cover {
+  min-height: 330px;
+  overflow: hidden;
+  border-radius: 14px;
+}
+.artwork-image-cover img {
+  object-fit: cover;
+}
 .artwork-copy h2 {
   margin-bottom: 18px;
   font-size: clamp(30px, 3.3vw, 45px);
@@ -1652,7 +1726,45 @@ body:has(.admin-login-page) > .quick-enquiry-trigger {
   line-height: 1.9;
 }
 .journey-section {
+  position: relative;
+  overflow: hidden;
   border-bottom: 1px solid #edf1f2;
+}
+.journey-section > .container {
+  position: relative;
+  z-index: 1;
+}
+.sketch-motif-journey {
+  top: 35px;
+  right: max(12px, calc((100vw - 1240px) / 2 - 35px));
+  width: 260px;
+  color: #386f86;
+  opacity: 0.08;
+  transform: rotate(7deg);
+}
+.sketch-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.sketch-section > :not(.sketch-motif) {
+  position: relative;
+  z-index: 1;
+}
+.sketch-motif-study {
+  top: 105px;
+  right: -54px;
+  width: 285px;
+  opacity: 0.075;
+  transform: rotate(4deg);
+}
+.sketch-motif-london {
+  top: 28px;
+  right: -38px;
+  width: 245px;
+  color: #315f7b;
+  opacity: 0.085;
+  transform: rotate(-4deg);
 }
 .journey {
   list-style: none;
@@ -1716,17 +1828,15 @@ body:has(.admin-login-page) > .quick-enquiry-trigger {
   color: #557b91;
 }
 .resource-art > img {
-  object-fit: contain;
-  padding: 10px 8px 20px;
-  transform: scale(1.07);
+  object-fit: cover;
 }
 .resource-art-shade {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    transparent 55%,
-    rgba(238, 244, 247, 0.94)
+    transparent 48%,
+    rgba(4, 37, 61, 0.72)
   );
 }
 .resource-art > span {
@@ -1735,7 +1845,7 @@ body:has(.admin-login-page) > .quick-enquiry-trigger {
   left: 17px;
   font-size: 6px;
   letter-spacing: 0.16em;
-  color: #244e60;
+  color: #fff;
   font-weight: 600;
   z-index: 2;
 }
@@ -1938,6 +2048,22 @@ body:has(.admin-login-page) > .quick-enquiry-trigger {
   color: #5b707e;
   font-size: 11px;
   line-height: 1.9;
+}
+.footer-contact {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+  font-style: normal;
+}
+.footer-contact a {
+  width: fit-content;
+  color: #365569;
+  font-size: 11px;
+}
+.footer-contact a:hover {
+  color: var(--teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .footer-column {
   display: flex;
@@ -2739,6 +2865,9 @@ body:has(.admin-login-page) > .quick-enquiry-trigger {
   }
 }
 @media (max-width: 800px) {
+  .sketch-motif {
+    display: none;
+  }
   .container {
     width: calc(100% - 40px);
   }

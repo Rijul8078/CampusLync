@@ -1,6 +1,9 @@
+import nextEnv from "@next/env";
 import postgres from "postgres";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+
+nextEnv.loadEnvConfig(process.cwd());
 
 const url = process.env.DATABASE_URL;
 if (!url) throw new Error("DATABASE_URL is required");

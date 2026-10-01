@@ -12,7 +12,8 @@ export const site = {
   tagline: "Study. Settle. Succeed.",
   url: siteUrl(),
   legalName: process.env.BUSINESS_LEGAL_NAME || null,
-  email: process.env.BUSINESS_CONTACT_EMAIL || null,
+  email: process.env.BUSINESS_CONTACT_EMAIL || "campuslync1@gmail.com",
+  phone: process.env.BUSINESS_CONTACT_PHONE || "+919119235092",
   address: process.env.BUSINESS_POSTAL_ADDRESS || null,
   bookingUrl:
     rawBookingUrl && /^https:\/\//.test(rawBookingUrl) ? rawBookingUrl : null,

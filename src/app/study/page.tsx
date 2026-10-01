@@ -12,6 +12,7 @@ import {
   CheckList,
   Hero,
   SectionHeading,
+  SketchMotif,
 } from "@/components/ui";
 import { pageMetadata } from "@/lib/metadata";
 import { FAQ } from "@/components/faq";
@@ -95,7 +96,8 @@ export default function Page() {
           Request Academic Support
         </Button>
       </Hero>
-      <section className="section container">
+      <section className="section container sketch-section study-sketch-section">
+        <SketchMotif variant="study" />
         <SectionHeading
           eyebrow="Study support / built around you"
           title="Comprehensive support throughout your assignment."

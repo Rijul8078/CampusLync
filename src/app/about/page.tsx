@@ -13,7 +13,7 @@ export default function Page() {
         eyebrow="Made for the whole student experience"
         title="Student life doesn’t stop at the classroom."
         text="University can involve academic challenges, research decisions, career questions and the practical work of settling into a new place. CampusLync brings these forms of support together."
-        image="/images/student-life.webp"
+        image="/images/pages/about-community.webp"
         imageAlt="A diverse group of university students collaborating in a library"
       >
         <Button href="/contact">Meet Your Next Step</Button>
@@ -35,7 +35,9 @@ export default function Page() {
           </p>
           <p>
             Study and Career services are designed for students internationally.
-            Accommodation and relocation support is currently focused on London.
+            Accommodation and relocation support is currently focused on London,
+            where CampusLync works with accommodation providers to help students
+            explore suitable options.
           </p>
         </div>
       </section>

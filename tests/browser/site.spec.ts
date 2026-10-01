@@ -33,14 +33,20 @@ test("quick enquiry carries details into the support form", async ({
   );
 });
 
-test("consultation fallback and downloadable checklists are available", async ({
+test("consultation booking and downloadable checklists are available", async ({
   page,
   request,
 }) => {
   await page.goto("/book");
-  await expect(
-    page.getByText("Online calendar scheduling is not connected yet."),
-  ).toBeVisible();
+  const bookingLink = page.getByRole("link", { name: "View available times" });
+  const fallback = page.getByText(
+    "Online calendar scheduling is not connected yet.",
+  );
+  await expect(bookingLink.or(fallback)).toBeVisible();
+  if (await bookingLink.count()) {
+    await expect(bookingLink).toHaveAttribute("href", /^https:\/\//);
+    await expect(bookingLink).toHaveAttribute("target", "_blank");
+  }
   await page.goto("/resources");
   await expect(
     page.getByRole("link", { name: "Download checklist" }),
@@ -218,7 +224,7 @@ async function fillForm(page: import("@playwright/test").Page) {
     .fill("Please help me plan my academic research.");
   await page.getByLabel("I agree to the").check();
 }
-test("enquiry validates, preselects service, requires phone and reports unavailable delivery", async ({
+test("enquiry validates, preselects service, requires phone and handles unavailable delivery", async ({
   page,
 }) => {
   await page.goto("/contact?service=Academic%20Support");
@@ -234,6 +240,16 @@ test("enquiry validates, preselects service, requires phone and reports unavaila
   await page.getByRole("button", { name: "Request Support" }).click();
   await expect(page.locator("#phone-error")).toBeVisible();
   await page.getByRole("radio", { name: "Email", exact: true }).check();
+  await page.route("**/api/enquiries", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({
+        status: "unavailable",
+        message: "Your enquiry has not been sent.",
+      }),
+    }),
+  );
   await page.getByRole("button", { name: "Request Support" }).click();
   await expect(page.getByRole("status")).toContainText(
     "Your enquiry has not been sent.",

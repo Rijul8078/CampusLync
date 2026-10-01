@@ -2,7 +2,9 @@ import {
   BookOpen,
   BriefcaseBusiness,
   House,
+  Mail,
   MessageCircle,
+  Phone,
 } from "lucide-react";
 import Image from "next/image";
 import { Breadcrumbs, Button } from "@/components/ui";
@@ -10,6 +12,7 @@ import { ContactForm } from "@/components/contact-form";
 import { deliveryAdapter } from "@/lib/enquiry-delivery";
 import { enquiryStorageReady } from "@/lib/enquiry-repository";
 import { pageMetadata } from "@/lib/metadata";
+import { site } from "@/lib/config";
 export const metadata = pageMetadata(
   "Get Support",
   "Request worldwide academic or career support, or specialist London accommodation and relocation guidance from CampusLync.",
@@ -46,6 +49,22 @@ export default async function Page({
               Request a consultation
             </Button>
           </div>
+          <address className="contact-direct">
+            <a href={`mailto:${site.email}`}>
+              <Mail size={19} aria-hidden="true" />
+              <span>
+                <small>Email us</small>
+                {site.email}
+              </span>
+            </a>
+            <a href={`tel:${site.phone}`}>
+              <Phone size={19} aria-hidden="true" />
+              <span>
+                <small>Call or WhatsApp</small>
+                {site.phone}
+              </span>
+            </a>
+          </address>
           <div className="contact-services">
             {[
               {

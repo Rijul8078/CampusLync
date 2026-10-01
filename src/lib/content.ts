@@ -133,7 +133,7 @@ export const services: Service[] = [
       {
         title: "Accommodation search assistance",
         description:
-          "Get help organising your search across student halls, shared homes and other accommodation options. Availability is always subject to the provider.",
+          "Explore suitable options through CampusLync's London accommodation provider relationships, alongside other student halls and shared homes. Availability is always subject to the provider.",
       },
       {
         title: "Comparing your options",
@@ -164,6 +164,8 @@ export type Resource = {
     | "Moving Abroad";
   status: "coming-soon" | "published";
   slug: string;
+  image: string;
+  imageAlt: string;
 };
 export const resources: Resource[] = [
   {
@@ -171,60 +173,80 @@ export const resources: Resource[] = [
     category: "Academic",
     status: "coming-soon",
     slug: "structure-university-assignment",
+    image: "/images/resources/assignment-structure.webp",
+    imageAlt: "Student planning a university assignment at a library desk",
   },
   {
     title: "How to approach a dissertation",
     category: "Research",
     status: "coming-soon",
     slug: "approach-a-dissertation",
+    image: "/images/resources/dissertation-planning.webp",
+    imageAlt: "Postgraduate student reviewing a dissertation plan",
   },
   {
     title: "How to choose a research topic",
     category: "Research",
     status: "coming-soon",
     slug: "choose-a-research-topic",
+    image: "/images/resources/research-topic.webp",
+    imageAlt: "Students discussing possible research topics together",
   },
   {
     title: "Academic referencing explained",
     category: "Academic",
     status: "coming-soon",
     slug: "academic-referencing-explained",
+    image: "/images/resources/academic-referencing.webp",
+    imageAlt: "Student checking citations using books and a laptop",
   },
   {
     title: "How academic proofreading works",
     category: "Academic",
     status: "coming-soon",
     slug: "academic-proofreading",
+    image: "/images/resources/academic-proofreading.webp",
+    imageAlt: "Student proofreading a draft beside a laptop",
   },
   {
     title: "How to prepare your first graduate CV",
     category: "Career",
     status: "coming-soon",
     slug: "first-graduate-cv",
+    image: "/images/resources/graduate-cv.webp",
+    imageAlt: "Graduate preparing a CV on a laptop",
   },
   {
     title: "How to prepare for an interview",
     category: "Career",
     status: "coming-soon",
     slug: "prepare-for-an-interview",
+    image: "/images/resources/interview-preparation.webp",
+    imageAlt: "Graduate practising an interview with a career mentor",
   },
   {
     title: "International student study tips",
     category: "Student Life",
     status: "coming-soon",
     slug: "international-student-study-tips",
+    image: "/images/resources/international-student-tips.webp",
+    imageAlt: "International university students studying together",
   },
   {
     title: "How to find student accommodation in London",
     category: "Accommodation",
     status: "coming-soon",
     slug: "student-accommodation-london",
+    image: "/images/resources/london-accommodation.webp",
+    imageAlt: "Student comparing London accommodation options",
   },
   {
     title: "A student’s guide to moving to London",
     category: "Moving Abroad",
     status: "coming-soon",
     slug: "moving-to-london",
+    image: "/images/resources/moving-to-london.webp",
+    imageAlt: "Student arriving on a London street with a suitcase",
   },
 ];
 export const faqs = [
@@ -246,7 +268,7 @@ export const faqs = [
   {
     question: "Can you help me find accommodation in London?",
     answer:
-      "We offer accommodation search assistance, area guidance and help comparing options. We do not own properties, act as a letting agent or guarantee accommodation. You make the final choice and contract directly with the provider.",
+      "We offer accommodation search assistance, area guidance and help comparing options, including options from accommodation providers we work with in London. We do not own properties, act as a letting agent or guarantee accommodation. You make the final choice and contract directly with the provider.",
   },
   {
     question: "What kind of academic support do you provide?",
@@ -314,6 +336,11 @@ export const serviceFaqs = {
       question: "Where is accommodation support available?",
       answer:
         "Accommodation search assistance is currently available for students moving to or living in London.",
+    },
+    {
+      question: "Does CampusLync work with accommodation providers?",
+      answer:
+        "Yes. CampusLync works with accommodation providers in London to help students explore suitable options. Provider relationships do not guarantee availability, acceptance or a particular outcome, and students contract directly with the provider.",
     },
     {
       question: "Does CampusLync own or rent properties?",

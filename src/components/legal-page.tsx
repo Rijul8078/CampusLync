@@ -10,8 +10,16 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
         eyebrow="Clear about the details"
         title={kind === "privacy" ? "Privacy Policy" : "Terms of use"}
         text="Draft for review. This page must be completed with confirmed business and service details before the website accepts live enquiries."
-        image="/images/resources.webp"
-        imageAlt="Student reviewing information on a laptop in a library"
+        image={
+          kind === "privacy"
+            ? "/images/pages/privacy.webp"
+            : "/images/pages/terms.webp"
+        }
+        imageAlt={
+          kind === "privacy"
+            ? "Student reviewing privacy settings on a laptop"
+            : "Student carefully reviewing a service document"
+        }
       />
       <section className="section container prose">
         <div className="form-notice">
@@ -109,10 +117,12 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
             </p>
             <h2>Academic support</h2>
             <p>
-              Students retain responsibility for their work and must follow
-              their institution’s rules. CampusLync does not complete assessed
-              work for submission, impersonate students or guarantee grades. The
-              Academic Integrity page describes the boundaries of our support.
+              CampusLync provides academic consultancy, tutoring, research
+              guidance, feedback, editing and development support. Students stay
+              involved, retain authorship and responsibility for the final work,
+              and must follow their institution’s rules. CampusLync does not
+              impersonate students or guarantee grades. The Academic Integrity
+              page explains how responsible support works.
             </p>
             <h2>Career support</h2>
             <p>
@@ -123,10 +133,12 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
             <h2>Accommodation and relocation</h2>
             <p>
               CampusLync currently offers accommodation search assistance and
-              relocation guidance in London. It does not own accommodation, act
-              as a letting agent or guarantee availability. Students must verify
-              information and make their own agreements with providers. We do
-              not provide regulated legal, financial or immigration advice.
+              relocation guidance in London and works with accommodation
+              providers to help students explore options. It does not own
+              accommodation, act as a letting agent or guarantee availability.
+              Students must verify information and make their own agreements
+              with providers. We do not provide regulated legal, financial or
+              immigration advice.
             </p>
             <h2>Using the website</h2>
             <p>

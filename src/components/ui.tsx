@@ -21,6 +21,59 @@ import {
   type Resource,
 } from "@/lib/content";
 
+export function SketchMotif({
+  variant,
+}: {
+  variant: "hero" | "journey" | "study" | "london";
+}) {
+  return (
+    <svg
+      className={`sketch-motif sketch-motif-${variant}`}
+      viewBox="0 0 320 220"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {variant === "hero" && (
+        <>
+          <path d="M31 156c50-70 91-15 130-62 30-36 71-31 116-4" />
+          <path className="sketch-dash" d="M28 166c60-67 102-7 144-56 31-36 68-28 109-5" />
+          <path d="m242 52 47 18-39 12-8 32-10-28-24-13 34-21Z" />
+          <path d="m44 55 5 11 12 2-9 8 2 12-10-6-11 6 3-12-9-8 12-2 5-11Z" />
+          <path d="m91 31 3 7 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1 3-7Z" />
+        </>
+      )}
+      {variant === "journey" && (
+        <>
+          <circle cx="220" cy="95" r="56" />
+          <circle cx="220" cy="95" r="42" />
+          <path d="m220 48 13 34 34 13-34 13-13 34-13-34-34-13 34-13 13-34Z" />
+          <path className="sketch-dash" d="M22 178c58-42 94 15 139-24 29-26 56-27 112-7" />
+          <path d="m42 155 18 2-8 16" />
+        </>
+      )}
+      {variant === "study" && (
+        <>
+          <path d="M42 55c43-18 82-13 116 13v111c-36-24-75-29-116-12V55Z" />
+          <path d="M278 55c-43-18-82-13-116 13v111c36-24 75-29 116-12V55Z" />
+          <path d="M162 68v111" />
+          <path d="m73 88 56 4M73 111l62 5M73 135l48 4M193 91l52-5M191 116l59-6M194 140l42-5" />
+          <path d="m242 33 18 9-57 111-24 17 3-29 60-108Z" />
+        </>
+      )}
+      {variant === "london" && (
+        <>
+          <path className="sketch-dash" d="M35 174c46-74 86-5 132-62 34-42 64-38 112-6" />
+          <path d="M36 62 91 26l55 36v88H36V62Z" />
+          <path d="M63 150V94h54v56M50 71h82" />
+          <path d="M249 61c0 25-31 54-31 54s-31-29-31-54a31 31 0 1 1 62 0Z" />
+          <circle cx="218" cy="61" r="11" />
+          <path d="m267 157 20 7-16 7-7 18-6-16-15-7 17-5 7-4Z" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 export function Button({
   href,
   children,
@@ -73,6 +126,7 @@ export function ArtworkPanel({
   title,
   text,
   reverse = false,
+  imageFit = "contain",
 }: {
   image: string;
   alt: string;
@@ -80,10 +134,11 @@ export function ArtworkPanel({
   title: string;
   text: string;
   reverse?: boolean;
+  imageFit?: "contain" | "cover";
 }) {
   return (
     <section className={`artwork-panel ${reverse ? "reverse" : ""}`}>
-      <div className="artwork-image">
+      <div className={`artwork-image artwork-image-${imageFit}`}>
         <Image
           src={image}
           alt={alt}
@@ -148,8 +203,8 @@ export function Hero({
               fill
               sizes="(max-width: 800px) calc(100vw - 40px), 360px"
               style={{ objectPosition: imagePosition }}
-              loading={current === "Study Support" ? "eager" : "lazy"}
-              fetchPriority={current === "Study Support" ? "high" : "auto"}
+              loading="eager"
+              fetchPriority="high"
             />
             <span>{current}</span>
           </div>
@@ -286,6 +341,7 @@ const journeyIcons = [
 export function StudentJourney() {
   return (
     <section className="section journey-section">
+      <SketchMotif variant="journey" />
       <div className="container">
         <SectionHeading
           eyebrow="Support throughout your student journey"
@@ -317,21 +373,12 @@ export function ResourceCard({
   resource: Resource;
   index: number;
 }) {
-  const artwork =
-    resource.category === "Career"
-      ? "/artwork/career-progression.webp"
-      : resource.category === "Accommodation" ||
-          resource.category === "Moving Abroad"
-        ? "/artwork/london-living.webp"
-        : resource.category === "Student Life"
-          ? "/artwork/global-support.webp"
-          : "/artwork/academic-development.webp";
   return (
     <article className="resource-card">
       <div className={`resource-art resource-art-${index % 4}`}>
         <Image
-          src={artwork}
-          alt=""
+          src={resource.image}
+          alt={resource.imageAlt}
           fill
           sizes="(max-width: 580px) 50vw, 300px"
         />

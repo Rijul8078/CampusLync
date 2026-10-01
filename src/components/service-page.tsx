@@ -23,7 +23,7 @@ const intros = {
   },
   accommodation: {
     title: "Find somewhere that feels like home.",
-    text: "Moving to London for university? Get help understanding your options, comparing areas and organising your accommodation search.",
+    text: "Moving to London for university? Explore options through accommodation providers we work with, compare areas and organise your search with practical guidance.",
   },
 };
 const heroImages = {
@@ -178,10 +178,10 @@ export function ServicePage({ kind }: { kind: ServiceKey }) {
                 Accommodation assistance is currently available in London only.
               </p>
               <p>
-                CampusLync provides accommodation search assistance and
-                practical guidance. We do not own properties, act as a letting
-                agent, guarantee accommodation or claim partnerships with
-                accommodation providers.
+                CampusLync works with accommodation providers in London and can
+                help you explore suitable options. We also provide search
+                assistance and practical guidance. We do not own properties,
+                act as a letting agent or guarantee accommodation.
               </p>
               <p>
                 You make your own decisions and agreements with the provider. We

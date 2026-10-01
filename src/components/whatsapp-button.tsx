@@ -1,3 +1,5 @@
+import { site } from "@/lib/config";
+
 export function WhatsAppButton() {
   const message = encodeURIComponent(
     "Hello CampusLync, I would like to know more about your student support services.",
@@ -6,7 +8,7 @@ export function WhatsAppButton() {
   return (
     <a
       className="whatsapp-button"
-      href={`https://wa.me/919119235092?text=${message}`}
+      href={`https://wa.me/${site.phone.replace(/\D/g, "")}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with CampusLync on WhatsApp"

@@ -7,6 +7,7 @@ import {
   SectionHeading,
   CTA,
   ResourceCard,
+  SketchMotif,
 } from "@/components/ui";
 import { londonSteps, resources } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
@@ -22,7 +23,7 @@ export default function Page() {
         current="Moving to London"
         eyebrow="London living / a considered start"
         title="New city. New chapter. A little support."
-        text="Moving to London for university brings a lot of firsts. Bring the practical pieces together with guidance for before you leave, when you arrive and as you settle in."
+        text="Moving to London for university brings a lot of firsts. Explore accommodation options through providers we work with and bring the practical pieces together before you leave, when you arrive and as you settle in."
         image="/images/london.webp"
         imageAlt="The Houses of Parliament and Big Ben beside the River Thames in London"
       >
@@ -30,7 +31,8 @@ export default function Page() {
           Plan Your Move
         </Button>
       </Hero>
-      <section className="section container">
+      <section className="section container sketch-section london-sketch-section">
+        <SketchMotif variant="london" />
         <SectionHeading
           eyebrow="From planning to belonging"
           title="Take London one step at a time."
@@ -80,12 +82,13 @@ export default function Page() {
           </div>
         </div>
         <ArtworkPanel
-          image="/artwork/london-living.webp"
-          alt="Abstract student relocation scene with a home, luggage, route and London skyline"
+          image="/images/pages/london-planning.webp"
+          alt="Student moving plan with travel essentials organised on a table"
           eyebrow="Plan the practical journey"
           title="Arrive with fewer unknowns."
           text="A clear plan can connect your accommodation search, travel, first-week essentials and university start."
           reverse
+          imageFit="cover"
         />
       </section>
       <section className="section soft-section">

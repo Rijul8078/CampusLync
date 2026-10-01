@@ -1,4 +1,7 @@
+import nextEnv from "@next/env";
 import postgres from "postgres";
+
+nextEnv.loadEnvConfig(process.cwd());
 
 const url = process.env.DATABASE_URL;
 const days = Number(process.env.DATA_RETENTION_DAYS);

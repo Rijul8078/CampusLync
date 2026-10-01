@@ -17,6 +17,7 @@ import {
   ResourcePreview,
   SectionHeading,
   ArtworkPanel,
+  SketchMotif,
 } from "@/components/ui";
 import { HomeVisual } from "@/components/home-visual";
 import { FAQ } from "@/components/faq";
@@ -30,6 +31,7 @@ export default function Home() {
   return (
     <>
       <section className="home-hero">
+        <SketchMotif variant="hero" />
         <div className="container home-hero-grid">
           <div className="hero-copy">
             <p className="eyebrow">
@@ -92,8 +94,9 @@ export default function Home() {
           </p>
           <h2>Moving to London?</h2>
           <p>
-            CampusLync also provides accommodation and relocation assistance for
-            students moving to London.
+            CampusLync works with accommodation providers in London and also
+            provides search and relocation guidance for students moving to the
+            city.
           </p>
         </div>
         <Button href="/moving-to-london" light>

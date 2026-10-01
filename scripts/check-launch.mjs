@@ -1,3 +1,7 @@
+import nextEnv from "@next/env";
+
+nextEnv.loadEnvConfig(process.cwd());
+
 const required = [
   "NEXT_PUBLIC_SITE_URL",
   "BUSINESS_LEGAL_NAME",

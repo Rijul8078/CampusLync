@@ -12,8 +12,8 @@ export default function Page() {
         current="Academic Integrity"
         eyebrow="Learning comes first"
         title="Support for your learning. Ownership of your work."
-        text="CampusLync provides legitimate academic guidance. We help you understand, practise and improve—not outsource your education."
-        image="/images/study.webp"
+        text="CampusLync provides academic consultancy, guidance and detailed development support while keeping you involved in the work and responsible for the final submission."
+        image="/images/pages/academic-integrity.webp"
         imageAlt="University student developing her own work in a library"
       />
       <section className="section container prose">
@@ -34,13 +34,14 @@ export default function Page() {
             "Mentoring on planning and managing your own project",
           ]}
         />
-        <h2>Work we will not undertake</h2>
+        <h2>How responsible support works</h2>
         <p>
-          We do not write assignments, dissertations or assessed coursework for
-          submission on a student’s behalf. We do not sit exams, impersonate
-          students, fabricate research or references, complete assessed tasks,
-          or help conceal unauthorised assistance. We do not offer
-          contract-cheating services or promise grades.
+          Support can cover planning, research strategy, structure, academic
+          writing development, detailed feedback, editing, referencing and
+          final review. You stay involved throughout, retain authorship and take
+          responsibility for the ideas, evidence, accuracy and final version you
+          submit. CampusLync never impersonates a student, fabricates research
+          or references, or promises grades.
         </p>
         <h2>Check the rules before seeking support</h2>
         <p>
